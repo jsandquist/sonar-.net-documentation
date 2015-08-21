@@ -80,8 +80,9 @@ While preparing a Virtual Machine that will host SonarQube database, portal and/
 	- Alternatively if you are also looking for **integrated security** you can consider:
 
 		```
-		sonar.jdbc.url=jdbc:jtds:sqlserver://localhost:1433/sonar;instance=SQLEXPRESS;integratedSecurity=true;authenticationScheme=JavaKerberos
+		sonar.jdbc.url=jdbc:jtds:sqlserver://localhost:1433/sonar;instance=SQLEXPRESS;domain=YOUR_DOMAIN
 		```
+		and the additional info at http://jtds.sourceforge.net/faq.html#windowsAuth with details on how to install the required SSO library on Windows.
 
 	- Basic configuration of SonarQube consists of making a few updates to the **sonar.properties** file.
 	- This file is located in the conf folder located under the SonarQube installation folder.
@@ -119,18 +120,18 @@ While preparing a Virtual Machine that will host SonarQube database, portal and/
 	
 	**>> NOTE >>** We tested this configuration in an environment that has no security add-ons. If this does not work in your environment, you need to troubleshoot with your IT departments.
 	
-	- Please refer to [Building the Connection URL](https://msdn.microsoft.com/en-us/library/ms378428.aspx) for additional details on how to build SQL Server connection string for JDBC.
+	- Please refer to ** THIS IS WRONG *** [Building the Connection URL](https://msdn.microsoft.com/en-us/library/ms378428.aspx) for additional details on how to build SQL Server connection string for JDBC.
 	- Edit **sonar.properties**.
 	- Change the **SQL Server connection** string to use **integrated security**. 
 		    
     		
     		# Only the distributed jTDS driver is supported. 
-    		sonar.jdbc.url=jdbc:jtds:sqlserver://localhost;databaseName=sonar;integratedSecurity=true;”
+    		sonar.jdbc.url=jdbc:jtds:sqlserver://localhost;databaseName=sonar;domain=YOUR_DOMAIN”
     		
 	- If you are using Sonar-runner for analysis, edit **sonar-runner.properties** and add the same configuration. 
 	
 		    #----- Microsoft SQLServer
-    		sonar.jdbc.url=jdbc:jtds:sqlserver://localhost;databaseName=sonar;integratedSecurity=true;”
+    		sonar.jdbc.url=jdbc:jtds:sqlserver://localhost;databaseName=sonar;domain=YOUR_DOMAIN”
 		
 
 6. <a name="installLatestPluginAnchor"></a>**Download and install latest SonarQube C# plugin**
@@ -197,8 +198,8 @@ While preparing a Virtual Machine that will host SonarQube database, portal and/
 	- Edit **C:\\SonarQube\\bin\\SonarQube.Analysis.xml** by specifying the following parameters to run against the SonarQube Server we set up earlier.
 	- If you are running SonarQube 5.1.x or less, uncomment and set the following properties:
 		- `sonar.jdbc.url`
-		- `sonar.jdbc.username`
-		- `sonar.jdbc.password`
+		- `sonar.jdbc.username`  (uncomment but leave empty if using integrated security)
+		- `sonar.jdbc.password`  (comment out if using integrated security)
 
 			![](_img/MSBuild.SonarQube.Runner.Settings.png)
 
